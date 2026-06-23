@@ -1,49 +1,36 @@
-public class Paciente {
-    public String nome;
-    public String cpf;
-    public int idade;
-    public String telefone;
-    public String convenioNome;
-    public boolean ativo;
+public class Paciente extends Pessoa{
+    private String convenioNome;
+    private boolean ativo;
 
     public Paciente(String nome, String cpf) {
-        this.nome = nome;
-        this.cpf = cpf;
-        this.idade = 0;
-        this.telefone = "";
+        super(nome,cpf, 0, "");
         this.convenioNome = "";
         this.ativo = true;
     }
 
     public Paciente(String nome, String cpf, int idade, String telefone) {
-        this.nome = nome;
-        this.cpf = cpf;
-        this.idade = idade;
-        this.telefone = telefone;
+        super(nome, cpf, idade, telefone); 
         this.convenioNome = "";
         this.ativo = true;
     }
 
     // construtor com todos os dados
     public Paciente(String nome, String cpf, int idade, String telefone, String convenioNome) {
-        this.nome = nome;
-        this.cpf = cpf;
-        this.idade = idade;
-        this.telefone = telefone;
+        super(nome, cpf, idade, telefone);
         this.convenioNome = convenioNome;
         this.ativo = true;
     }
 
     // atualiza so idade e telefone
     public void complementar(int idade, String telefone) {
-        this.idade = idade;
-        this.telefone = telefone;
+        setIdade(idade);
+        setTelefone(telefone);
     }
 
     // atualiza tudo incluindo convenio
     public void complementar(int idade, String telefone, String convenioNome) {
-        this.idade = idade;
-        this.telefone = telefone;
+        setIdade(idade);
+        setTelefone(telefone);
         this.convenioNome = convenioNome;
     }
 
@@ -51,13 +38,30 @@ public class Paciente {
         this.ativo = false;
     }
 
+    public String getConvenio() {
+        return convenioNome;
+    }
+
+    public void setConvenio(String convenioNome) {
+        this.convenioNome = convenioNome;
+    }
+
+    public boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    @Override
     public String exibirResumo() {
         String status = "Sim";
-        if (!ativo) {
+        if (!getAtivo()) {
             status = "Nao";
         }
-        return "Nome: " + nome + " | CPF: " + cpf + " | Idade: " + idade
-                + " | Tel: " + telefone + " | Convenio: " + convenioNome
+        return "Nome: " + getNome() + " | CPF: " + getCpf() + " | Idade: " + getIdade()
+                + " | Tel: " + getTelefone() + " | Convenio: " + getConvenio()
                 + " | Ativo: " + status;
     }
 }
