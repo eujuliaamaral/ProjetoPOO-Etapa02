@@ -1,13 +1,15 @@
+import java.util.List;
+
 public class Relatorio {
 
     // mostra todas as consultas
     public static void gerarRelatorio(Consulta[] consultas, int totalConsultas,
-                                      Atendimento[] atendimentos, int totalAtendimentos) {
+                                      List<Atendimento> atendimentos) {
         System.out.println("\n=== RELATORIO GERAL ===");
         for (int i = 0; i < totalConsultas; i++) {
             System.out.println(consultas[i].exibirResumo());
             // verifica se tem diagnostico
-            String diag = buscarDiagnostico(i, atendimentos, totalAtendimentos);
+            String diag = buscarDiagnostico(i, atendimentos);
             if (!diag.equals("")) {
                 System.out.println("  Diagnostico: " + diag);
             }
@@ -17,14 +19,14 @@ public class Relatorio {
 
     // filtra por profissional
     public static void gerarRelatorio(Consulta[] consultas, int totalConsultas,
-                                      Atendimento[] atendimentos, int totalAtendimentos,
+                                      List<Atendimento> atendimentos,
                                       String nomeProfissional) {
         System.out.println("\n=== RELATORIO - " + nomeProfissional + " ===");
         boolean achou = false;
         for (int i = 0; i < totalConsultas; i++) {
             if (consultas[i].nomeProfissional.equals(nomeProfissional)) {
                 System.out.println(consultas[i].exibirResumo());
-                String diag = buscarDiagnostico(i, atendimentos, totalAtendimentos);
+                String diag = buscarDiagnostico(i, atendimentos);
                 if (!diag.equals("")) {
                     System.out.println("  Diagnostico: " + diag);
                 }
@@ -39,13 +41,13 @@ public class Relatorio {
 
     // filtra por periodo (data inicio e fim)
     public static void gerarRelatorio(Consulta[] consultas, int totalConsultas,
-                                      Atendimento[] atendimentos, int totalAtendimentos,
+                                      List<Atendimento> atendimentos,
                                       String dataInicio, String dataFim) {
         System.out.println("\n=== RELATORIO - " + dataInicio + " a " + dataFim + " ===");
         for (int i = 0; i < totalConsultas; i++) {
             if (estaNoIntervalo(consultas[i].data, dataInicio, dataFim)) {
                 System.out.println(consultas[i].exibirResumo());
-                String diag = buscarDiagnostico(i, atendimentos, totalAtendimentos);
+                String diag = buscarDiagnostico(i, atendimentos);
                 if (!diag.equals("")) {
                     System.out.println("  Diagnostico: " + diag);
                 }
@@ -84,10 +86,10 @@ public class Relatorio {
     }
 
     // busca diagnostico de um atendimento pelo indice da consulta
-    public static String buscarDiagnostico(int indiceConsulta, Atendimento[] atendimentos, int total) {
-        for (int i = 0; i < total; i++) {
-            if (atendimentos[i].indiceConsulta == indiceConsulta) {
-                return atendimentos[i].diagnostico;
+    public static String buscarDiagnostico(int indiceConsulta, List<Atendimento> atendimentos) {
+        for (int i = 0; i < atendimentos.size(); i++) {
+            if (atendimentos.get(i).indiceConsulta == indiceConsulta) {
+                return atendimentos.get(i).getProntuario().getDiagnostico();
             }
         }
         return "";

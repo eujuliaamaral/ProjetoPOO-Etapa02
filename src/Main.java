@@ -11,8 +11,7 @@ public class Main {
     static Consulta[] consultas = new Consulta[200];
     static int totalConsultas = 0;
 
-    static Atendimento[] atendimentos = new Atendimento[200];
-    static int totalAtendimentos = 0;
+    static List<Atendimento> atendimentos = new ArrayList<>();
 
     static Pagamento[] pagamentos = new Pagamento[200];
     static int totalPagamentos = 0;
@@ -717,56 +716,59 @@ public class Main {
             return;
         }
 
+        System.out.print("Data do registro (dd/mm/aaaa): ");
+        String data = sc.nextLine();
+
         System.out.print("Observacoes: ");
         String obs = sc.nextLine();
 
         System.out.print("Tipo de registro (1-So obs / 2-Com diagnostico / 3-Completo): ");
         int tipo = Integer.parseInt(sc.nextLine());
 
+        Atendimento atendimento;
+
         if (tipo == 1) {
-            atendimentos[totalAtendimentos] = new Atendimento(idxConsulta, obs);
+            atendimento = new Atendimento(idxConsulta, obs, data);
 
         } else if (tipo == 2) {
             System.out.print("Diagnostico: ");
             String diag = sc.nextLine();
-            atendimentos[totalAtendimentos] = new Atendimento(idxConsulta, obs, diag);
+            atendimento = new Atendimento(idxConsulta, obs, diag, data);
 
         } else {
             System.out.print("Diagnostico: ");
             String diag = sc.nextLine();
 
+            List<String> procs = new ArrayList<>();
             System.out.print("Como informar procedimentos? (1-Um por vez / 2-Todos de uma vez): ");
             int forma = Integer.parseInt(sc.nextLine());
 
-            String[] procs = new String[10];
-            int qtdProcs = 0;
-
             if (forma == 1) {
                 String proc = "";
-                while (!proc.equals("fim") && qtdProcs < 10) {
+                while (!proc.equals("fim")) {
                     System.out.print("Procedimento (ou 'fim'): ");
                     proc = sc.nextLine();
                     if (!proc.equals("fim")) {
-                        procs[qtdProcs] = proc;
-                        qtdProcs++;
+                        procs.add(proc);
                     }
                 }
             } else {
                 System.out.print("Quantos? ");
-                qtdProcs = Integer.parseInt(sc.nextLine());
-                if (qtdProcs > 10) qtdProcs = 10;
-                for (int i = 0; i < qtdProcs; i++) {
+                int qtd = Integer.parseInt(sc.nextLine());
+                for (int i = 0; i < qtd; i++) {
                     System.out.print("Proc " + (i+1) + ": ");
-                    procs[i] = sc.nextLine();
+                    procs.add(sc.nextLine());
                 }
             }
-            atendimentos[totalAtendimentos] = new Atendimento(idxConsulta, obs, diag, procs, qtdProcs);
+            atendimento = new Atendimento(idxConsulta, obs, diag, procs, data);
         }
 
+        atendimentos.add(atendimento);
+
         consultas[idxConsulta].realizar();
-        totalAtendimentos++;
+
         System.out.println("\n--- RESUMO ---");
-        System.out.println(atendimentos[totalAtendimentos - 1].exibirResumo());
+        System.out.println(atendimento.exibirResumo());
         System.out.println("Consulta marcada como realizada.");
     }
 
@@ -915,19 +917,19 @@ public class Main {
 
             switch (op) {
                 case 1:
-                    Relatorio.gerarRelatorio(consultas, totalConsultas, atendimentos, totalAtendimentos);
+                    Relatorio.gerarRelatorio(consultas, totalConsultas, atendimentos);
                     break;
                 case 2:
                     System.out.print("Nome do profissional: ");
                     String nome = sc.nextLine();
-                    Relatorio.gerarRelatorio(consultas, totalConsultas, atendimentos, totalAtendimentos, nome);
+                    Relatorio.gerarRelatorio(consultas, totalConsultas, atendimentos, nome);
                     break;
                 case 3:
                     System.out.print("Data inicio (DD/MM/AAAA): ");
                     String ini = sc.nextLine();
                     System.out.print("Data fim (DD/MM/AAAA): ");
                     String fim = sc.nextLine();
-                    Relatorio.gerarRelatorio(consultas, totalConsultas, atendimentos, totalAtendimentos, ini, fim);
+                    Relatorio.gerarRelatorio(consultas, totalConsultas, atendimentos, ini, fim);
                     break;
                 case 4:
                     Relatorio.gerarResumoFinanceiro(consultas, totalConsultas, pagamentos, totalPagamentos, multas, totalMultas);

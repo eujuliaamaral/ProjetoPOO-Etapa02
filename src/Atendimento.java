@@ -1,74 +1,73 @@
+import java.util.List;
+
 public class Atendimento {
+    // COMPOSIÇÃO: Prontuário só existe dentro de Atendimento — se Atendimento for removido, Prontuário também é.
     public int indiceConsulta;
-    public String observacoes;
-    public String diagnostico;
-    public String[] procedimentos;
-    public int totalProcedimentos;
+    private Prontuario prontuario;
 
     // registro basico - so observacoes
-    public Atendimento(int indiceConsulta, String observacoes) {
+    public Atendimento(int indiceConsulta, String observacoes, String data) {
         this.indiceConsulta = indiceConsulta;
-        this.observacoes = observacoes;
-        this.diagnostico = "";
-        this.procedimentos = new String[10];
-        this.totalProcedimentos = 0;
+        this.prontuario = new Prontuario(observacoes, "", data);
     }
 
-    public Atendimento(int indiceConsulta, String observacoes, String diagnostico) {
+    public Atendimento(int indiceConsulta, String observacoes, String diagnostico, String data) {
         this.indiceConsulta = indiceConsulta;
-        this.observacoes = observacoes;
-        this.diagnostico = diagnostico;
-        this.procedimentos = new String[10];
-        this.totalProcedimentos = 0;
+        this.prontuario = new Prontuario(observacoes, diagnostico, data);
     }
 
     // registro completo com procedimentos ja definidos
     public Atendimento(int indiceConsulta, String observacoes, String diagnostico,
-                       String[] procedimentos, int totalProcedimentos) {
+                       List<String> procedimentos, String data) {
         this.indiceConsulta = indiceConsulta;
-        this.observacoes = observacoes;
-        this.diagnostico = diagnostico;
-        this.procedimentos = new String[10];
-        this.totalProcedimentos = totalProcedimentos;
-        for (int i = 0; i < totalProcedimentos; i++) {
-            this.procedimentos[i] = procedimentos[i];
-        }
+        this.prontuario = new Prontuario(observacoes, diagnostico, data);
+        this.prontuario.adicionarProcedimentos(procedimentos);
     }
 
     // adiciona um por vez
     public void adicionarProcedimento(String procedimento) {
-        if (totalProcedimentos < 10) {
-            procedimentos[totalProcedimentos] = procedimento;
-            totalProcedimentos++;
-        }
+        this.prontuario.adicionarProcedimento(procedimento);
     }
 
     // adiciona varios de uma vez
-    public void adicionarProcedimento(String[] procs, int quantidade) {
-        for (int i = 0; i < quantidade; i++) {
-            if (totalProcedimentos < 10) {
-                procedimentos[totalProcedimentos] = procs[i];
-                totalProcedimentos++;
-            }
-        }
+    public void adicionarProcedimento(List<String> procedimentos) {
+        this.prontuario.adicionarProcedimentos(procedimentos);
     }
 
     public String exibirResumo() {
-        String resumo = "Observacoes: " + observacoes;
+        StringBuilder resumo = new StringBuilder("Data: " + prontuario.getDataRegistro());
+        resumo.append("\nObservacoes: ").append(prontuario.getObservacoes());
 
-        if (!diagnostico.equals("")) {
-            resumo = resumo + "\nDiagnostico: " + diagnostico;
+        if (prontuario.getDiagnostico() != null && !prontuario.getDiagnostico().isEmpty()) {
+            resumo.append("\nDiagnostico: ").append(prontuario.getDiagnostico());
         }
 
-        if (totalProcedimentos > 0) {
-            resumo = resumo + "\nProcedimentos: ";
-            for (int i = 0; i < totalProcedimentos; i++) {
-                resumo = resumo + procedimentos[i];
-                if (i < totalProcedimentos - 1) {
-                    resumo = resumo + ", ";
+        if (!prontuario.getProcedimentos().isEmpty()) {
+            resumo.append("\nProcedimentos: ");
+            List<String> procs = prontuario.getProcedimentos();
+            for (int i = 0; i < procs.size(); i++) {
+                resumo.append(procs.get(i));
+                if (i < procs.size() - 1) {
+                    resumo.append(", ");
                 }
             }
         }
-        return resumo;
+        return resumo.toString();
+    }
+
+    public int getIndiceConsulta() {
+        return indiceConsulta;
+    }
+
+    public void setIndiceConsulta(int indiceConsulta) {
+        this.indiceConsulta = indiceConsulta;
+    }
+
+    public Prontuario getProntuario() {
+        return prontuario;
+    }
+
+    public void setProntuario(Prontuario prontuario) {
+        this.prontuario = prontuario;
     }
 }
