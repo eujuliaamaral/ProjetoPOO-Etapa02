@@ -1,22 +1,19 @@
-public class Pagamento {
-    public int indiceConsulta;
-    public double valorFinal;
-    public String tipoPagamento;
-    public int parcelas;
+public abstract class Pagamento implements Exportavel {
+    private int indiceConsulta;
+    private double valorBase;
+    private String tipoPagamento;
+    private int parcelas;
 
     public Pagamento(int indiceConsulta, double valorFinal, String tipoPagamento) {
-        this.indiceConsulta = indiceConsulta;
-        this.valorFinal = valorFinal;
-        this.tipoPagamento = tipoPagamento;
-        this.parcelas = 1;
+        this(indiceConsulta, valorFinal, tipoPagamento, 1);
     }
 
     // com parcelas (so pra cartao)
     public Pagamento(int indiceConsulta, double valorFinal, String tipoPagamento, int parcelas) {
-        this.indiceConsulta = indiceConsulta;
-        this.valorFinal = valorFinal;
-        this.tipoPagamento = tipoPagamento;
-        this.parcelas = parcelas;
+        setIndiceConsulta(indiceConsulta);
+        setValorBase(valorFinal);
+        setTipoPagamento(tipoPagamento);
+        setParcelas(parcelas);
     }
 
     // sem desconto nenhum
@@ -44,8 +41,11 @@ public class Pagamento {
         return valor;
     }
 
+    public abstract double calcularValorFinal();
+
     public String exibirResumo() {
         // arredonda pra 2 casas
+        double valorFinal = calcularValorFinal();
         double valorArredondado = Math.round(valorFinal * 100.0) / 100.0;
         String resumo = "Consulta #" + indiceConsulta + " | Valor: R$" + valorArredondado
                 + " | Tipo: " + tipoPagamento + " | Parcelas: " + parcelas;
@@ -54,5 +54,54 @@ public class Pagamento {
             resumo = resumo + " (R$" + valorParcela + " cada)";
         }
         return resumo;
+    }
+
+    @Override
+    public String exportarDados() {
+        return exibirResumo();
+    }
+
+    public int getIndiceConsulta() {
+        return indiceConsulta;
+    }
+
+    public void setIndiceConsulta(int indiceConsulta) {
+        this.indiceConsulta = indiceConsulta;
+    }
+
+    public double getValorBase() {
+        return valorBase;
+    }
+
+    public void setValorBase(double valorBase) {
+        if (valorBase < 0) {
+            this.valorBase = 0;
+            return;
+        }
+        this.valorBase = valorBase;
+    }
+
+    public String getTipoPagamento() {
+        return tipoPagamento;
+    }
+
+    public void setTipoPagamento(String tipoPagamento) {
+        if (tipoPagamento == null || tipoPagamento.trim().isEmpty()) {
+            this.tipoPagamento = "nao informado";
+            return;
+        }
+        this.tipoPagamento = tipoPagamento;
+    }
+
+    public int getParcelas() {
+        return parcelas;
+    }
+
+    public void setParcelas(int parcelas) {
+        if (parcelas < 1) {
+            this.parcelas = 1;
+            return;
+        }
+        this.parcelas = parcelas;
     }
 }
