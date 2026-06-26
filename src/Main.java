@@ -499,8 +499,8 @@ public class Main {
         // localiza a consulta
         int idx = -1;
         for (int i = 0; i < consultas.size(); i++) {
-            if (consultas.get(i).cpfPaciente.equals(cpf) && consultas.get(i).data.equals(data)
-                    && consultas.get(i).horario.equals(horario)) {
+            if (consultas.get(i).getCpfPaciente().equals(cpf) && consultas.get(i).getData().equals(data)
+                    && consultas.get(i).getHorario().equals(horario)) {
                 idx = i;
                 break;
             }
@@ -510,11 +510,11 @@ public class Main {
             System.out.println("Consulta nao encontrada.");
             return;
         }
-        if (consultas.get(idx).status.equals("realizada")) {
+        if (consultas.get(idx).getStatus().equals("realizada")) {
             System.out.println("Consulta ja realizada. Nao pode cancelar.");
             return;
         }
-        if (consultas.get(idx).status.equals("cancelada")) {
+        if (consultas.get(idx).getStatus().equals("cancelada")) {
             System.out.println("Consulta ja cancelada.");
             return;
         }
@@ -556,9 +556,9 @@ public class Main {
 
         int idx = -1;
         for (int i = 0; i < consultas.size(); i++) {
-            if (consultas.get(i).cpfPaciente.equals(cpf) && consultas.get(i).data.equals(dataOrig)
-                    && consultas.get(i).horario.equals(horarioOrig)
-                    && consultas.get(i).status.equals("agendada")) {
+            if (consultas.get(i).getCpfPaciente().equals(cpf) && consultas.get(i).getData().equals(dataOrig)
+                    && consultas.get(i).getHorario().equals(horarioOrig)
+                    && consultas.get(i).getStatus().equals("agendada")) {
                 idx = i;
                 break;
             }
@@ -586,7 +586,7 @@ public class Main {
             novoHorario = sc.nextLine();
         }
 
-        String nomeProf = consultas.get(idx).nomeProfissional;
+        String nomeProf = consultas.get(idx).getNomeProfissional();
         int idxProf = buscarIndiceProfissional(nomeProf);
 
         // se mudou de dia, verifica se prof atende
@@ -604,7 +604,7 @@ public class Main {
         }
 
         consultas.get(idx).remarcar();
-        clinica.adicionarConsulta(new Consulta(cpf, nomeProf, novaData, novoHorario, consultas.get(idx).tipo));
+        clinica.adicionarConsulta(new Consulta(cpf, nomeProf, novaData, novoHorario, consultas.get(idx).getTipo()));
         System.out.println("Consulta remarcada com sucesso!");
     }
 
@@ -623,7 +623,7 @@ public class Main {
         String cpf = sc.nextLine();
         boolean achou = false;
         for (int i = 0; i < consultas.size(); i++) {
-            if (consultas.get(i).cpfPaciente.equals(cpf)) {
+            if (consultas.get(i).getCpfPaciente().equals(cpf)) {
                 System.out.println("[" + i + "] " + consultas.get(i).exibirResumo());
                 achou = true;
             }
@@ -634,10 +634,10 @@ public class Main {
     // verifica se ja tem consulta nesse horario com esse profissional
     public static boolean temConflito(String nomeProf, String data, String horario) {
         for (int i = 0; i < consultas.size(); i++) {
-            if (consultas.get(i).nomeProfissional.equals(nomeProf)
-                    && consultas.get(i).data.equals(data)
-                    && consultas.get(i).horario.equals(horario)
-                    && consultas.get(i).status.equals("agendada")) {
+            if (consultas.get(i).getNomeProfissional().equals(nomeProf)
+                    && consultas.get(i).getData().equals(data)
+                    && consultas.get(i).getHorario().equals(horario)
+                    && consultas.get(i).getStatus().equals("agendada")) {
                 return true;
             }
         }
@@ -709,7 +709,7 @@ public class Main {
             System.out.println("Indice invalido.");
             return;
         }
-        if (!consultas.get(idxConsulta).status.equals("agendada")) {
+        if (!consultas.get(idxConsulta).getStatus().equals("agendada")) {
             System.out.println("So pode registrar atendimento em consulta agendada.");
             return;
         }
@@ -833,16 +833,16 @@ public class Main {
         }
 
         // obtem valor do profissional
-        String nomeProf = consultas.get(idxConsulta).nomeProfissional;
+        String nomeProf = consultas.get(idxConsulta).getNomeProfissional();
         int idxProf = buscarIndiceProfissional(nomeProf);
         double valorBase = profissionais.get(idxProf).getValorConsulta();
 
         // verifica convenio e tipo
-        String cpfPac = consultas.get(idxConsulta).cpfPaciente;
+        String cpfPac = consultas.get(idxConsulta).getCpfPaciente();
         int idxPac = buscarIndicePaciente(cpfPac);
 
         boolean temConvenio = !pacientes.get(idxPac).getConvenio().equals("");
-        boolean ehRetorno = consultas.get(idxConsulta).tipo.equals("retorno");
+        boolean ehRetorno = consultas.get(idxConsulta).getTipo().equals("retorno");
 
         double desconto = 0;
         if (ehRetorno) desconto = desconto + 20;

@@ -22,7 +22,7 @@ public class Relatorio {
         System.out.println("\n=== RELATORIO - " + nomeProfissional + " ===");
         boolean achou = false;
         for (int i = 0; i < consultas.size(); i++) {
-            if (consultas.get(i).nomeProfissional.equals(nomeProfissional)) {
+            if (consultas.get(i).getNomeProfissional().equals(nomeProfissional)) {
                 System.out.println(consultas.get(i).exibirResumo());
                 String diag = buscarDiagnostico(i, atendimentos);
                 if (!diag.equals("")) {
@@ -42,7 +42,7 @@ public class Relatorio {
                                       String dataInicio, String dataFim) {
         System.out.println("\n=== RELATORIO - " + dataInicio + " a " + dataFim + " ===");
         for (int i = 0; i < consultas.size(); i++) {
-            if (estaNoIntervalo(consultas.get(i).data, dataInicio, dataFim)) {
+            if (estaNoIntervalo(consultas.get(i).getData(), dataInicio, dataFim)) {
                 System.out.println(consultas.get(i).exibirResumo());
                 String diag = buscarDiagnostico(i, atendimentos);
                 if (!diag.equals("")) {
@@ -62,8 +62,8 @@ public class Relatorio {
         double totalEmMultas = 0;
 
         for (Consulta consulta : consultas) {
-            if (consulta.status.equals("realizada")) realizadas++;
-            if (consulta.status.equals("cancelada")) canceladas++;
+            if (consulta.getStatus().equals("realizada")) realizadas++;
+            if (consulta.getStatus().equals("cancelada")) canceladas++;
         }
 
         for (Pagamento pagamento : pagamentos) {
