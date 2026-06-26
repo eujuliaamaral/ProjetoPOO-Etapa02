@@ -6,6 +6,8 @@ public abstract class Profissional extends Pessoa{
     private String registroProfissional;
     private double valorConsulta;
     private List<String> diasDisponiveis = new ArrayList<>();
+    // AGREGACAO: Profissional possui horarios, mas horarios sobrevivem sem o profissional.
+    private List<HorarioDisponivel> horariosDisponiveis = new ArrayList<>();
 
     // so nome e especialidade
     public Profissional(String nome, String especialidade) {
@@ -29,7 +31,7 @@ public abstract class Profissional extends Pessoa{
         this.especialidade = especialidade;
         this.registroProfissional = registroProfissional;
         this.valorConsulta = valorConsulta;
-        this.diasDisponiveis = new ArrayList<>(dias);
+        setDiasDisponiveis(dias);
     }
 
     public void atualizar(int idade, String telefone, String registro, double valor) {
@@ -44,12 +46,57 @@ public abstract class Profissional extends Pessoa{
         setTelefone(telefone);
         this.registroProfissional = registro;
         this.valorConsulta = valor;
-        this.diasDisponiveis = new ArrayList<>(dias);
+        setDiasDisponiveis(dias);
     }
 
     // verifica se o profissional atende naquele dia
     public boolean atendeNoDia(String dia) {
-        return diasDisponiveis.contains(dia);
+        for (HorarioDisponivel horario : horariosDisponiveis) {
+            if (horario.getDiaSemana().equals(dia)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void adicionarHorario(HorarioDisponivel horario) {
+        if (horario == null) {
+            return;
+        }
+        horariosDisponiveis.add(horario);
+        if (!diasDisponiveis.contains(horario.getDiaSemana())) {
+            diasDisponiveis.add(horario.getDiaSemana());
+        }
+    }
+
+    public void adicionarHorario(String diaSemana, String turno) {
+        adicionarHorario(new HorarioDisponivel(diaSemana, turno));
+    }
+
+    private void setDiasDisponiveis(List<String> dias) {
+        this.diasDisponiveis = new ArrayList<>();
+        this.horariosDisponiveis = new ArrayList<>();
+        if (dias == null) {
+            return;
+        }
+        for (String dia : dias) {
+            adicionarHorario(new HorarioDisponivel(dia));
+        }
+    }
+
+    protected String resumoAgenda() {
+        if (horariosDisponiveis.isEmpty()) {
+            return "Sem horarios cadastrados";
+        }
+
+        StringBuilder resumo = new StringBuilder();
+        for (int i = 0; i < horariosDisponiveis.size(); i++) {
+            resumo.append(horariosDisponiveis.get(i).exibirResumo());
+            if (i < horariosDisponiveis.size() - 1) {
+                resumo.append(", ");
+            }
+        }
+        return resumo.toString();
     }
 
     // valida as especialidades aceitas pela clinica
@@ -71,7 +118,11 @@ public abstract class Profissional extends Pessoa{
         return valorConsulta; 
     }
     public List<String> getDiasDisponiveis(){ 
-        return diasDisponiveis; 
+        return new ArrayList<>(diasDisponiveis); 
+    }
+
+    public List<HorarioDisponivel> getHorariosDisponiveis(){
+        return new ArrayList<>(horariosDisponiveis);
     }
 
     public abstract String exibirResumo();

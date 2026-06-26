@@ -1,23 +1,30 @@
 public class Paciente extends Pessoa{
-    private String convenioNome;
+    // ASSOCIACAO: Paciente conhece Convenio, mas ambos existem independentemente.
+    private Convenio convenio;
     private boolean ativo;
 
     public Paciente(String nome, String cpf) {
         super(nome,cpf, 0, "");
-        this.convenioNome = "";
+        this.convenio = null;
         this.ativo = true;
     }
 
     public Paciente(String nome, String cpf, int idade, String telefone) {
         super(nome, cpf, idade, telefone); 
-        this.convenioNome = "";
+        this.convenio = null;
         this.ativo = true;
     }
 
     // construtor com todos os dados
     public Paciente(String nome, String cpf, int idade, String telefone, String convenioNome) {
         super(nome, cpf, idade, telefone);
-        this.convenioNome = convenioNome;
+        setConvenio(convenioNome);
+        this.ativo = true;
+    }
+
+    public Paciente(String nome, String cpf, int idade, String telefone, Convenio convenio) {
+        super(nome, cpf, idade, telefone);
+        this.convenio = convenio;
         this.ativo = true;
     }
 
@@ -31,7 +38,13 @@ public class Paciente extends Pessoa{
     public void complementar(int idade, String telefone, String convenioNome) {
         setIdade(idade);
         setTelefone(telefone);
-        this.convenioNome = convenioNome;
+        setConvenio(convenioNome);
+    }
+
+    public void complementar(int idade, String telefone, Convenio convenio) {
+        setIdade(idade);
+        setTelefone(telefone);
+        this.convenio = convenio;
     }
 
     public void desativar() {
@@ -39,11 +52,26 @@ public class Paciente extends Pessoa{
     }
 
     public String getConvenio() {
-        return convenioNome;
+        if (convenio == null) {
+            return "";
+        }
+        return convenio.getNome();
+    }
+
+    public Convenio getConvenioObjeto() {
+        return convenio;
     }
 
     public void setConvenio(String convenioNome) {
-        this.convenioNome = convenioNome;
+        if (convenioNome == null || convenioNome.trim().isEmpty()) {
+            this.convenio = null;
+            return;
+        }
+        this.convenio = new Convenio(convenioNome);
+    }
+
+    public void setConvenio(Convenio convenio) {
+        this.convenio = convenio;
     }
 
     public boolean getAtivo() {
