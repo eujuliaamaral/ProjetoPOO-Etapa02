@@ -1,5 +1,4 @@
 public class Paciente extends Pessoa{
-    // ASSOCIACAO: Paciente conhece Convenio, mas ambos existem independentemente.
     private Convenio convenio;
     private boolean ativo;
 

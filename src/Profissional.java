@@ -6,7 +6,6 @@ public abstract class Profissional extends Pessoa{
     private String registroProfissional;
     private double valorConsulta;
     private List<String> diasDisponiveis = new ArrayList<>();
-    // AGREGACAO: Profissional possui horarios, mas horarios sobrevivem sem o profissional.
     private List<HorarioDisponivel> horariosDisponiveis = new ArrayList<>();
 
     // so nome e especialidade

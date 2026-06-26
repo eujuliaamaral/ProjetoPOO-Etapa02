@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class ClinicaServico {
-    // ArrayList<Paciente>: ordem de cadastro importa; acesso por indice e iteracao sao usados nos menus.
     private List<Paciente> pacientes;
     private List<Profissional> profissionais;
     private List<Consulta> consultas;
@@ -15,10 +14,8 @@ public class ClinicaServico {
     private List<Double> multas;
     private List<Pessoa> pessoas;
 
-    // HashSet<String>: apenas verificacao de existencia; nao precisa de ordem.
     private Set<String> cpfsCadastrados;
 
-    // HashMap<String, Paciente>: busca por chave CPF; mais eficiente que percorrer lista.
     private Map<String, Paciente> pacientesPorCpf;
     private Map<String, Profissional> profissionaisPorNome;
 

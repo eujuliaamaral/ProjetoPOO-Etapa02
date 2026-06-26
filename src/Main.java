@@ -812,13 +812,13 @@ public class Main {
             int parc = Integer.parseInt(sc.nextLine());
             if (parc < 1) parc = 1;
             if (parc > 3) parc = 3;
-            clinica.adicionarPagamento(new Pagamento(idxConsulta, valor, tipoPag, parc));
+            clinica.adicionarPagamento(criarPagamento(idxConsulta, valor, tipoPag, parc));
             if (parc > 1) {
                 double vlrParc = Math.round((valor / parc) * 100.0) / 100.0;
                 System.out.println("Pagamento em " + parc + "x de R$" + vlrParc);
             }
         } else {
-            clinica.adicionarPagamento(new Pagamento(idxConsulta, valor, tipoPag));
+            clinica.adicionarPagamento(criarPagamento(idxConsulta, valor, tipoPag));
         }
         System.out.println("Pagamento registrado!");
     }
@@ -878,11 +878,11 @@ public class Main {
             int parc = Integer.parseInt(sc.nextLine());
             if (parc < 1) parc = 1;
             if (parc > 3) parc = 3;
-            clinica.adicionarPagamento(new Pagamento(idxConsulta, valorFinal, tipoPag, parc));
+            clinica.adicionarPagamento(criarPagamento(idxConsulta, valorFinal, tipoPag, parc));
             double vlrParc = Math.round((valorFinal / parc) * 100.0) / 100.0;
             System.out.println("Pagamento em " + parc + "x de R$" + vlrParc);
         } else {
-            clinica.adicionarPagamento(new Pagamento(idxConsulta, valorFinal, tipoPag));
+            clinica.adicionarPagamento(criarPagamento(idxConsulta, valorFinal, tipoPag));
         }
         System.out.println("Pagamento registrado!");
     }
@@ -895,6 +895,29 @@ public class Main {
         for (Pagamento pagamento : pagamentos) {
             System.out.println(pagamento.exibirResumo());
         }
+    }
+
+    public static Pagamento criarPagamento(int indiceConsulta, double valor, String tipoPagamento) {
+        return criarPagamento(indiceConsulta, valor, tipoPagamento, 1);
+    }
+
+    public static Pagamento criarPagamento(int indiceConsulta, double valor, String tipoPagamento, int parcelas) {
+        if (tipoPagamento.equals("dinheiro") || tipoPagamento.equals("pix")) {
+            return new PagamentoDinheiro(indiceConsulta, valor);
+        }
+        if (tipoPagamento.equals("cartao")) {
+            return new PagamentoCartao(indiceConsulta, valor, parcelas);
+        }
+        if (tipoPagamento.equals("convenio")) {
+            String cpfPaciente = consultas.get(indiceConsulta).getCpfPaciente();
+            Paciente paciente = clinica.buscarPacientePorCpf(cpfPaciente);
+            if (paciente != null) {
+                return new PagamentoConvenio(indiceConsulta, valor, paciente.getConvenioObjeto());
+            }
+            return new PagamentoConvenio(indiceConsulta, valor, null);
+        }
+        System.out.println("Tipo de pagamento nao reconhecido. Registrando como dinheiro.");
+        return new PagamentoDinheiro(indiceConsulta, valor);
     }
 
     // ---- RELATORIOS ----

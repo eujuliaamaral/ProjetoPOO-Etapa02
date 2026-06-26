@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class Atendimento {
+public class Atendimento implements Exportavel {
     // COMPOSIÇÃO: Prontuário só existe dentro de Atendimento — se Atendimento for removido, Prontuário também é.
     public int indiceConsulta;
     private Prontuario prontuario;
@@ -53,6 +53,11 @@ public class Atendimento {
             }
         }
         return resumo.toString();
+    }
+
+    @Override
+    public String exportarDados() {
+        return exibirResumo();
     }
 
     public int getIndiceConsulta() {

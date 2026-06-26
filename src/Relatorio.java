@@ -67,7 +67,7 @@ public class Relatorio {
         }
 
         for (Pagamento pagamento : pagamentos) {
-            totalFaturado = totalFaturado + pagamento.valorFinal;
+            totalFaturado = totalFaturado + pagamento.calcularValorFinal();
         }
 
         for (Double multa : multas) {
