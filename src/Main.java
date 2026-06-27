@@ -22,6 +22,28 @@ public class Main {
 
     static Scanner sc = new Scanner(System.in);
 
+    public static int lerInteiro(String mensagem) {
+        while (true) {
+            System.out.print(mensagem);
+            try {
+                return Integer.parseInt(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada invalida! Digite um numero inteiro.");
+            }
+        }
+    }
+
+    public static double lerDouble(String mensagem) {
+        while (true) {
+            System.out.print(mensagem);
+            try {
+                return Double.parseDouble(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada invalida! Digite um numero valido.");
+            }
+        }
+    }
+
     public static void main(String[] args) {
         int opcao = -1;
         while (opcao != 0) {
@@ -33,8 +55,7 @@ public class Main {
             System.out.println("5 - Pagamentos");
             System.out.println("6 - Relatorios");
             System.out.println("0 - Sair");
-            System.out.print("Escolha: ");
-            opcao = Integer.parseInt(sc.nextLine());
+            opcao = lerInteiro("Escolha: ");
 
             switch (opcao) {
                 case 1: menuPacientes(); break;
@@ -62,8 +83,7 @@ public class Main {
             System.out.println("4 - Listar todos");
             System.out.println("5 - Desativar");
             System.out.println("0 - Voltar");
-            System.out.print("Opcao: ");
-            op = Integer.parseInt(sc.nextLine());
+            op = lerInteiro("Opcao: ");
 
             switch (op) {
                 case 1: cadastrarPaciente(); break;
@@ -89,22 +109,19 @@ public class Main {
             return;
         }
 
-        System.out.print("Tipo (1-Minimo / 2-Com idade e tel / 3-Completo): ");
-        int tipo = Integer.parseInt(sc.nextLine());
+        int tipo = lerInteiro("Tipo (1-Minimo / 2-Com idade e tel / 3-Completo): ");
 
         Paciente paciente;
 
         if (tipo == 1) {
             paciente = new Paciente(nome, cpf);
         } else if (tipo == 2) {
-            System.out.print("Idade: ");
-            int idade = Integer.parseInt(sc.nextLine());
+            int idade = lerInteiro("Idade: ");
             System.out.print("Telefone: ");
             String tel = sc.nextLine();
             paciente = new Paciente(nome, cpf, idade, tel);
         } else {
-            System.out.print("Idade: ");
-            int idade = Integer.parseInt(sc.nextLine());
+            int idade = lerInteiro("Idade: ");
             System.out.print("Telefone: ");
             String tel = sc.nextLine();
             System.out.print("Convenio: ");
@@ -128,11 +145,9 @@ public class Main {
             return;
         }
 
-        System.out.print("Vai informar convenio? (1-Nao / 2-Sim): ");
-        int tipo = Integer.parseInt(sc.nextLine());
+        int tipo = lerInteiro("Vai informar convenio? (1-Nao / 2-Sim): ");
 
-        System.out.print("Idade: ");
-        int idade = Integer.parseInt(sc.nextLine());
+        int idade = lerInteiro("Idade: ");
         System.out.print("Telefone: ");
         String tel = sc.nextLine();
 
@@ -198,8 +213,7 @@ public class Main {
             System.out.println("3 - Listar todos");
             System.out.println("4 - Filtrar por especialidade");
             System.out.println("0 - Voltar");
-            System.out.print("Opcao: ");
-            op = Integer.parseInt(sc.nextLine());
+            op = lerInteiro("Opcao: ");
 
             switch (op) {
                 case 1: cadastrarProfissional(); break;
@@ -225,8 +239,7 @@ public class Main {
 
         Profissional profissional = null;
 
-        System.out.print("Tipo (1-Minimo / 2-Com registro e valor / 3-Completo): ");
-        int tipo = Integer.parseInt(sc.nextLine());
+        int tipo = lerInteiro("Tipo (1-Minimo / 2-Com registro e valor / 3-Completo): ");
 
         if (tipo == 1) {
             if (esp.equals("clinica geral")) profissional = new ClinicoGeral(nome);
@@ -236,9 +249,8 @@ public class Main {
         } else if (tipo == 2) {
             System.out.print("Registro: ");
             String reg = sc.nextLine();
-            System.out.print("Valor consulta: ");
-            double valor = Double.parseDouble(sc.nextLine());
-            
+            double valor = lerDouble("Valor consulta: ");
+
             if (esp.equals("clinica geral")) profissional = new ClinicoGeral(nome, reg, valor);
             else if (esp.equals("fisioterapia")) profissional = new Fisioterapeuta(nome, reg, valor);
             else if (esp.equals("psicologia")) profissional = new Psicologo(nome, reg, valor);
@@ -246,10 +258,8 @@ public class Main {
         } else {
             System.out.print("Registro: ");
             String reg = sc.nextLine();
-            System.out.print("Valor consulta: ");
-            double valor = Double.parseDouble(sc.nextLine());
-            System.out.print("Quantos dias atende? ");
-            int qtd = Integer.parseInt(sc.nextLine());
+            double valor = lerDouble("Valor consulta: ");
+            int qtd = lerInteiro("Quantos dias atende? ");
             List<String> dias = new ArrayList<>();
             if(qtd > 7){
                 System.out.println("A semana só tem 7 dias!");
@@ -290,19 +300,16 @@ public class Main {
             return;
         }
 
-        System.out.print("Vai informar dias? (1-Nao / 2-Sim): ");
-        int tipo = Integer.parseInt(sc.nextLine());
+        int tipo = lerInteiro("Vai informar dias? (1-Nao / 2-Sim): ");
 
         System.out.print("Registro: ");
         String reg = sc.nextLine();
-        System.out.print("Valor consulta: ");
-        double valor = Double.parseDouble(sc.nextLine());
+        double valor = lerDouble("Valor consulta: ");
 
         if (tipo == 1) {
             profissionais.get(idx).atualizar(0, "", reg, valor);
         } else {
-            System.out.print("Quantos dias? ");
-            int qtd = Integer.parseInt(sc.nextLine());
+            int qtd = lerInteiro("Quantos dias? ");
             List<String> dias = new ArrayList<>();
             if(qtd > 7){
                 System.out.println("A semana só tem 7 dias!");
@@ -361,8 +368,7 @@ public class Main {
             System.out.println("5 - Listar todas");
             System.out.println("6 - Buscar por CPF");
             System.out.println("0 - Voltar");
-            System.out.print("Opcao: ");
-            op = Integer.parseInt(sc.nextLine());
+            op = lerInteiro("Opcao: ");
 
             switch (op) {
                 case 1: agendarComProfissional(); break;
@@ -423,8 +429,7 @@ public class Main {
                 return;
             }
             System.out.println("Sugestao: " + sugestao);
-            System.out.print("Aceita? (1-Sim / 2-Nao): ");
-            int aceita = Integer.parseInt(sc.nextLine());
+            int aceita = lerInteiro("Aceita? (1-Sim / 2-Nao): ");
             if (aceita == 1) {
                 horario = sugestao;
             } else {
@@ -432,8 +437,7 @@ public class Main {
             }
         }
 
-        System.out.print("Informar tipo? (1-Nao / 2-Sim): ");
-        int infoTipo = Integer.parseInt(sc.nextLine());
+        int infoTipo = lerInteiro("Informar tipo? (1-Nao / 2-Sim): ");
 
         if (infoTipo == 1) {
             clinica.adicionarConsulta(new Consulta(cpf, nomeProf, data, horario));
@@ -523,17 +527,20 @@ public class Main {
         System.out.print("Horario atual (HH:MM): ");
         String horaAtual = sc.nextLine();
 
-        int hConsulta = Integer.parseInt(horario.substring(0, 2));
-        int hAgora = Integer.parseInt(horaAtual.substring(0, 2));
-        int diff = hConsulta - hAgora;
+        try {
+            int hConsulta = Integer.parseInt(horario.substring(0, 2));
+            int hAgora = Integer.parseInt(horaAtual.substring(0, 2));
+            int diff = hConsulta - hAgora;
 
-        if (diff < 2) {
-            System.out.println("Multa de R$50.00 aplicada!");
-            clinica.adicionarMulta(50.0);
+            if (diff < 2) {
+                System.out.println("Multa de R$50.00 aplicada!");
+                clinica.adicionarMulta(50.0);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Horario invalido. Multa nao calculada.");
         }
 
-        System.out.print("Informar motivo? (1-Nao / 2-Sim): ");
-        int temMotivo = Integer.parseInt(sc.nextLine());
+        int temMotivo = lerInteiro("Informar motivo? (1-Nao / 2-Sim): ");
 
         if (temMotivo == 1) {
             consultas.get(idx).cancelar();
@@ -569,8 +576,7 @@ public class Main {
             return;
         }
 
-        System.out.print("Apenas trocar horario no mesmo dia? (1-Sim / 2-Nao): ");
-        int tipo = Integer.parseInt(sc.nextLine());
+        int tipo = lerInteiro("Apenas trocar horario no mesmo dia? (1-Sim / 2-Nao): ");
 
         String novaData;
         String novoHorario;
@@ -663,9 +669,16 @@ public class Main {
     // descobre dia da semana a partir da data
     // operação opcional
     public static String descobrirDiaSemana(String data) {
-        int dia = Integer.parseInt(data.substring(0, 2));
-        int mes = Integer.parseInt(data.substring(3, 5));
-        int ano = Integer.parseInt(data.substring(6, 10));
+        int dia;
+        int mes;
+        int ano;
+        try {
+            dia = Integer.parseInt(data.substring(0, 2));
+            mes = Integer.parseInt(data.substring(3, 5));
+            ano = Integer.parseInt(data.substring(6, 10));
+        } catch (NumberFormatException e) {
+            return "";
+        }
 
         // ajuste pra formula funcionar com janeiro e fevereiro
         if (mes < 3) {
@@ -694,16 +707,14 @@ public class Main {
             System.out.println("\n--- ATENDIMENTOS ---");
             System.out.println("1 - Registrar atendimento");
             System.out.println("0 - Voltar");
-            System.out.print("Opcao: ");
-            op = Integer.parseInt(sc.nextLine());
+            op = lerInteiro("Opcao: ");
 
             if (op == 1) registrarAtendimento();
         }
     }
 
     public static void registrarAtendimento() {
-        System.out.print("Indice da consulta: ");
-        int idxConsulta = Integer.parseInt(sc.nextLine());
+        int idxConsulta = lerInteiro("Indice da consulta: ");
 
         if (idxConsulta < 0 || idxConsulta >= consultas.size()) {
             System.out.println("Indice invalido.");
@@ -720,8 +731,7 @@ public class Main {
         System.out.print("Observacoes: ");
         String obs = sc.nextLine();
 
-        System.out.print("Tipo de registro (1-So obs / 2-Com diagnostico / 3-Completo): ");
-        int tipo = Integer.parseInt(sc.nextLine());
+        int tipo = lerInteiro("Tipo de registro (1-So obs / 2-Com diagnostico / 3-Completo): ");
 
         Atendimento atendimento;
 
@@ -738,8 +748,7 @@ public class Main {
             String diag = sc.nextLine();
 
             List<String> procs = new ArrayList<>();
-            System.out.print("Como informar procedimentos? (1-Um por vez / 2-Todos de uma vez): ");
-            int forma = Integer.parseInt(sc.nextLine());
+            int forma = lerInteiro("Como informar procedimentos? (1-Um por vez / 2-Todos de uma vez): ");
 
             if (forma == 1) {
                 String proc = "";
@@ -751,8 +760,7 @@ public class Main {
                     }
                 }
             } else {
-                System.out.print("Quantos? ");
-                int qtd = Integer.parseInt(sc.nextLine());
+                int qtd = lerInteiro("Quantos? ");
                 for (int i = 0; i < qtd; i++) {
                     System.out.print("Proc " + (i+1) + ": ");
                     procs.add(sc.nextLine());
@@ -780,8 +788,7 @@ public class Main {
             System.out.println("2 - Pagamento automatico");
             System.out.println("3 - Listar pagamentos");
             System.out.println("0 - Voltar");
-            System.out.print("Opcao: ");
-            op = Integer.parseInt(sc.nextLine());
+            op = lerInteiro("Opcao: ");
 
             switch (op) {
                 case 1: pagamentoDireto(); break;
@@ -794,22 +801,19 @@ public class Main {
     }
 
     public static void pagamentoDireto() {
-        System.out.print("Indice da consulta: ");
-        int idxConsulta = Integer.parseInt(sc.nextLine());
+        int idxConsulta = lerInteiro("Indice da consulta: ");
 
         if (idxConsulta < 0 || idxConsulta >= consultas.size()) {
             System.out.println("Indice invalido.");
             return;
         }
 
-        System.out.print("Valor: ");
-        double valor = Double.parseDouble(sc.nextLine());
+        double valor = lerDouble("Valor: ");
         System.out.print("Tipo (dinheiro/cartao/convenio): ");
         String tipoPag = sc.nextLine();
 
         if (tipoPag.equals("cartao")) {
-            System.out.print("Parcelas (1 a 3): ");
-            int parc = Integer.parseInt(sc.nextLine());
+            int parc = lerInteiro("Parcelas (1 a 3): ");
             if (parc < 1) parc = 1;
             if (parc > 3) parc = 3;
             clinica.adicionarPagamento(criarPagamento(idxConsulta, valor, tipoPag, parc));
@@ -824,8 +828,7 @@ public class Main {
     }
 
     public static void pagamentoAutomatico() {
-        System.out.print("Indice da consulta: ");
-        int idxConsulta = Integer.parseInt(sc.nextLine());
+        int idxConsulta = lerInteiro("Indice da consulta: ");
 
         if (idxConsulta < 0 || idxConsulta >= consultas.size()) {
             System.out.println("Indice invalido.");
@@ -848,8 +851,7 @@ public class Main {
         if (ehRetorno) desconto = desconto + 20;
         if (temConvenio) desconto = desconto + 40;
 
-        System.out.print("Tem multa pendente? (1-Nao / 2-Sim): ");
-        int temMulta = Integer.parseInt(sc.nextLine());
+        int temMulta = lerInteiro("Tem multa pendente? (1-Nao / 2-Sim): ");
         double valorMulta = 0;
 
         double valorFinal;
@@ -858,8 +860,7 @@ public class Main {
         } else if (temMulta == 1) {
             valorFinal = Pagamento.calcularValor(valorBase, desconto);
         } else {
-            System.out.print("Valor da multa: ");
-            valorMulta = Double.parseDouble(sc.nextLine());
+            valorMulta = lerDouble("Valor da multa: ");
             valorFinal = Pagamento.calcularValor(valorBase, desconto, valorMulta);
         }
 
@@ -874,8 +875,7 @@ public class Main {
         String tipoPag = sc.nextLine();
 
         if (tipoPag.equals("cartao")) {
-            System.out.print("Parcelas (1 a 3): ");
-            int parc = Integer.parseInt(sc.nextLine());
+            int parc = lerInteiro("Parcelas (1 a 3): ");
             if (parc < 1) parc = 1;
             if (parc > 3) parc = 3;
             clinica.adicionarPagamento(criarPagamento(idxConsulta, valorFinal, tipoPag, parc));
@@ -931,8 +931,7 @@ public class Main {
             System.out.println("3 - Por periodo");
             System.out.println("4 - Resumo financeiro");
             System.out.println("0 - Voltar");
-            System.out.print("Opcao: ");
-            op = Integer.parseInt(sc.nextLine());
+            op = lerInteiro("Opcao: ");
 
             switch (op) {
                 case 1:
