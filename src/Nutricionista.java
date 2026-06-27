@@ -29,6 +29,11 @@ public class Nutricionista extends Profissional{
     }
 
     @Override
+    public void registrarEspecifico() {
+        System.out.println("Registro de nutricao: plano alimentar - " + getPlanoAlimentar());
+    }
+
+    @Override
     public String exibirResumo(){
         return "Nutricionista: " + getNome() + " | Registro: " + getRegistroProfissional() + 
                " | Plano Alimentar: " + getPlanoAlimentar();

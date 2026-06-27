@@ -230,7 +230,7 @@ public class Main {
         System.out.print("Nome: ");
         String nome = sc.nextLine();
         System.out.print("Especialidade (clinica geral/fisioterapia/psicologia/nutricao): ");
-        String esp = sc.nextLine();
+        String esp = Profissional.normalizarEspecialidade(sc.nextLine());
 
         if (!Profissional.especialidadeValida(esp)) {
             System.out.println("Especialidade invalida!");
@@ -262,7 +262,7 @@ public class Main {
             int qtd = lerInteiro("Quantos dias atende? ");
             List<String> dias = new ArrayList<>();
             if(qtd > 7){
-                System.out.println("A semana só tem 7 dias!");
+                System.out.println("A semana so tem 7 dias!");
                 return;
             }
             for (int i = 0; i < qtd; i++) {
@@ -274,11 +274,11 @@ public class Main {
             String enc = sc.nextLine();
             profissional = new ClinicoGeral(nome, "000", 0, "", reg, valor, enc, dias);
             }else if (esp.equals("fisioterapia")){
-                System.out.print("Sessões previstas: ");
+                System.out.print("Sessoes previstas: ");
                 int ses = sc.nextInt();
                 profissional = new Fisioterapeuta(nome, "000", 0, "", reg, valor, ses, dias);
             }else if (esp.equals("psicologia")){
-                System.out.print("Sessões previstas: ");
+                System.out.print("Sessoes previstas: ");
                 String abg = sc.nextLine();
                 profissional = new Psicologo(nome, "000", 0, "", reg, valor, abg, dias);
             }else if (esp.equals("nutricao")){
@@ -312,7 +312,7 @@ public class Main {
             int qtd = lerInteiro("Quantos dias? ");
             List<String> dias = new ArrayList<>();
             if(qtd > 7){
-                System.out.println("A semana só tem 7 dias!");
+                System.out.println("A semana so tem 7 dias!");
                 return;
             }
             for (int i = 0; i < qtd; i++) {
@@ -336,7 +336,7 @@ public class Main {
 
     public static void filtrarProfissionais() {
         System.out.print("Especialidade: ");
-        String esp = sc.nextLine();
+        String esp = Profissional.normalizarEspecialidade(sc.nextLine());
         boolean achou = false;
         for (Profissional p : profissionais) {
             if (p.getEspecialidade().equals(esp)) {
@@ -463,7 +463,7 @@ public class Main {
         }
 
         System.out.print("Especialidade: ");
-        String esp = sc.nextLine();
+        String esp = Profissional.normalizarEspecialidade(sc.nextLine());
         System.out.print("Data (DD/MM/AAAA): ");
         String data = sc.nextLine();
         System.out.print("Horario (HH:MM): ");
@@ -667,7 +667,7 @@ public class Main {
     }
 
     // descobre dia da semana a partir da data
-    // operação opcional
+    // operacao opcional
     public static String descobrirDiaSemana(String data) {
         int dia;
         int mes;
@@ -930,6 +930,7 @@ public class Main {
             System.out.println("2 - Por profissional");
             System.out.println("3 - Por periodo");
             System.out.println("4 - Resumo financeiro");
+            System.out.println("5 - Relatorio unificado de pessoas");
             System.out.println("0 - Voltar");
             op = lerInteiro("Opcao: ");
 
@@ -951,6 +952,9 @@ public class Main {
                     break;
                 case 4:
                     Relatorio.gerarResumoFinanceiro(consultas, pagamentos, multas);
+                    break;
+                case 5:
+                    Relatorio.gerarRelatorioPessoas(pessoas);
                     break;
                 case 0: break;
                 default: System.out.println("Opcao invalida!"); break;
