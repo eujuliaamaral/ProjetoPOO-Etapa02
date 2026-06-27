@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.text.Normalizer;
 
 public abstract class Profissional extends Pessoa{
     private String especialidade;
@@ -100,11 +101,21 @@ public abstract class Profissional extends Pessoa{
 
     // valida as especialidades aceitas pela clinica
     public static boolean especialidadeValida(String esp) {
-        if (esp.equals("clinica geral")) return true;
-        if (esp.equals("fisioterapia")) return true;
-        if (esp.equals("psicologia")) return true;
-        if (esp.equals("nutricao")) return true;
-        return false;
+        return !normalizarEspecialidade(esp).equals("");
+    }
+
+    public static String normalizarEspecialidade(String esp) {
+        if (esp == null) return "";
+
+        String normalizada = Normalizer.normalize(esp.trim().toLowerCase(), Normalizer.Form.NFD);
+        normalizada = normalizada.replaceAll("\\p{M}", "");
+        normalizada = normalizada.replaceAll("\\s+", " ");
+
+        if (normalizada.equals("clinica geral") || normalizada.equals("clinico geral")) return "clinica geral";
+        if (normalizada.equals("fisioterapia") || normalizada.equals("fisio")) return "fisioterapia";
+        if (normalizada.equals("psicologia") || normalizada.equals("psicologo")) return "psicologia";
+        if (normalizada.equals("nutricao") || normalizada.equals("nutricionista")) return "nutricao";
+        return "";
     }
 
     public String getEspecialidade(){
@@ -124,5 +135,6 @@ public abstract class Profissional extends Pessoa{
         return new ArrayList<>(horariosDisponiveis);
     }
 
+    public abstract void registrarEspecifico();
     public abstract String exibirResumo();
 }

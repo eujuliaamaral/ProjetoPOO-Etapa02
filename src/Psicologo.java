@@ -28,6 +28,11 @@ public class Psicologo extends Profissional{
     }
 
     @Override
+    public void registrarEspecifico() {
+        System.out.println("Registro de psicologia: abordagem - " + getAbordagem());
+    }
+
+    @Override
     public String exibirResumo(){
         return "Psicologo: " + getNome() + " | Registro: " + getRegistroProfissional() + 
                " | Abordagem: " + getAbordagem();

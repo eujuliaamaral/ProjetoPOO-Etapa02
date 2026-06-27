@@ -1,7 +1,7 @@
 import java.util.List;
 
 public class Atendimento implements Exportavel {
-    // COMPOSIÇÃO: Prontuário só existe dentro de Atendimento — se Atendimento for removido, Prontuário também é.
+    // COMPOSICAO: Prontuario so existe dentro de Atendimento; se Atendimento for removido, Prontuario tambem e.
     public int indiceConsulta;
     private Prontuario prontuario;
 

@@ -2,6 +2,31 @@ import java.util.List;
 
 public class Relatorio {
 
+    public static void gerarRelatorioPessoas(List<Pessoa> pessoas) {
+        System.out.println("\n=== RELATORIO UNIFICADO DE PESSOAS ===");
+
+        if (pessoas.isEmpty()) {
+            System.out.println("Nenhuma pessoa cadastrada.");
+            return;
+        }
+
+        for (Pessoa pessoa : pessoas) {
+            System.out.println(pessoa.exibirResumo());
+
+            if (pessoa instanceof Paciente) {
+                Paciente paciente = (Paciente) pessoa;
+                System.out.println("  Tipo: Paciente | Ativo: " + (paciente.getAtivo() ? "Sim" : "Nao")
+                        + " | Convenio: " + paciente.getConvenio());
+            } else if (pessoa instanceof Profissional) {
+                Profissional profissional = (Profissional) pessoa;
+                System.out.println("  Tipo: Profissional | Especialidade: " + profissional.getEspecialidade()
+                        + " | Registro: " + profissional.getRegistroProfissional());
+            }
+
+            System.out.println("---");
+        }
+    }
+
     // mostra todas as consultas
     public static void gerarRelatorio(List<Consulta> consultas, List<Atendimento> atendimentos) {
         System.out.println("\n=== RELATORIO GERAL ===");
