@@ -11,6 +11,7 @@ public class Relatorio {
         }
 
         for (Pessoa pessoa : pessoas) {
+            // LIGACAO DINAMICA: o metodo chamado depende do tipo REAL do objeto, nao do tipo da referencia.
             System.out.println(pessoa.exibirResumo());
 
             if (pessoa instanceof Paciente) {
@@ -92,6 +93,7 @@ public class Relatorio {
         }
 
         for (Pagamento pagamento : pagamentos) {
+            // LIGACAO DINAMICA: cada subclasse calcula calcularValorFinal() de forma diferente (escolhido em runtime).
             totalFaturado = totalFaturado + pagamento.calcularValorFinal();
         }
 
@@ -109,7 +111,7 @@ public class Relatorio {
     // busca diagnostico de um atendimento pelo indice da consulta
     public static String buscarDiagnostico(int indiceConsulta, List<Atendimento> atendimentos) {
         for (int i = 0; i < atendimentos.size(); i++) {
-            if (atendimentos.get(i).indiceConsulta == indiceConsulta) {
+            if (atendimentos.get(i).getIndiceConsulta() == indiceConsulta) {
                 return atendimentos.get(i).getProntuario().getDiagnostico();
             }
         }

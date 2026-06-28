@@ -1,7 +1,9 @@
 public class Paciente extends Pessoa{
+    // ASSOCIACAO: Paciente conhece Convenio, mas ambos existem independentemente.
     private Convenio convenio;
     private boolean ativo;
 
+    // SOBRECARGA: mesmo nome, parametros diferentes (resolvido em tempo de compilacao).
     public Paciente(String nome, String cpf) {
         super(nome,cpf, 0, "");
         this.convenio = null;
@@ -81,6 +83,7 @@ public class Paciente extends Pessoa{
         this.ativo = ativo;
     }
 
+    // SOBRESCRITA: mesmo nome e parametros, a classe filha redefine o comportamento (resolvido em tempo de execucao).
     @Override
     public String exibirResumo() {
         String status = "Sim";

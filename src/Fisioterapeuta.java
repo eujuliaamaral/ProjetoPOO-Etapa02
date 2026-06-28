@@ -28,8 +28,8 @@ public class Fisioterapeuta extends Profissional{
     }
 
     @Override
-    public void registrarEspecifico() {
-        System.out.println("Registro de fisioterapia: sessoes previstas - " + getTotalSessoesPrevistas());
+    public void registrarEspecifico(Atendimento atendimento) {
+        atendimento.adicionarProcedimento("Fisioterapia: " + getTotalSessoesPrevistas() + " sessoes previstas");
     }
 
     @Override

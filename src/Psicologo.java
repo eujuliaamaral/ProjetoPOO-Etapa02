@@ -28,8 +28,8 @@ public class Psicologo extends Profissional{
     }
 
     @Override
-    public void registrarEspecifico() {
-        System.out.println("Registro de psicologia: abordagem - " + getAbordagem());
+    public void registrarEspecifico(Atendimento atendimento) {
+        atendimento.adicionarProcedimento("Abordagem terapeutica: " + getAbordagem());
     }
 
     @Override

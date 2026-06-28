@@ -28,8 +28,8 @@ public class ClinicoGeral extends Profissional{
     }
 
     @Override
-    public void registrarEspecifico() {
-        System.out.println("Registro clinico geral: encaminhamento - " + getEncaminhamento());
+    public void registrarEspecifico(Atendimento atendimento) {
+        atendimento.adicionarProcedimento("Encaminhamento: " + getEncaminhamento());
     }
 
     @Override
